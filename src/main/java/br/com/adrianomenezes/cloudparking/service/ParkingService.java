@@ -3,6 +3,7 @@ package br.com.adrianomenezes.cloudparking.service;
 import br.com.adrianomenezes.cloudparking.entity.Parking;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,19 @@ public class ParkingService {
         return parkingMap.values().stream().collect(Collectors.toList());
     }
 
+    public Parking findById(String id){
+        return parkingMap.get(id);
+    }
+
     private static String getUUID() {
         return UUID.randomUUID().toString().replace("-","");
     }
 
+    public Parking create(Parking parking) {
+        var uuid = getUUID();
+        parking.setId(uuid);
+        parking.setEntryDate(LocalDateTime.now());
+        parkingMap.put(uuid, parking);
+        return parking;
+    }
 }

@@ -1,8 +1,8 @@
 package br.com.adrianomenezes.cloudparking.controller.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Getter
@@ -11,16 +11,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
-public class ParkingDTO {
+public class ParkingCreateDTO {
 
-        private String id;
         private String license;
         private String state;
         private String model;
         private String color;
 
-        @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-        private LocalDateTime entryDate;
-        private LocalDateTime exitDate;
-        private Double bill;
 }

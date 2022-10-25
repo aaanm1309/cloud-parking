@@ -1,18 +1,26 @@
 package br.com.adrianomenezes.cloudparking.controller;
 
+import br.com.adrianomenezes.cloudparking.controller.dto.ParkingCreateDTO;
 import br.com.adrianomenezes.cloudparking.controller.dto.ParkingDTO;
 import br.com.adrianomenezes.cloudparking.controller.mapper.ParkingMapper;
 import br.com.adrianomenezes.cloudparking.entity.Parking;
 import br.com.adrianomenezes.cloudparking.service.ParkingService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.models.annotations.OpenAPI30;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/parking")
+@Tag(name = "Parking Controller", description = "API ParkingController")
 public class ParkingController {
 
 
@@ -23,26 +31,32 @@ public class ParkingController {
         this.parkingService = parkingService;
         this.parkingMapper = parkingMapper;
     }
-
-
+    @Operation(summary = "Get list of parking", description = "Get the user details. The operation returns the details of the user that is associated " + "with the provided JWT token.")
     @GetMapping
-    public List<ParkingDTO> findAll(){
-//        var parking = new Parking();
-//        parking.setColor("PRETO");
-//        parking.setLicense("MMM-1232");
-//        parking.setModel("GOL");
-//        parking.setState("SP");
-//        var parking2 = new Parking();
-//        parking.setColor("VERDE");
-//        parking.setLicense("MMM-3333");
-//        parking.setModel("VECTRA");
-//        parking.setState("MG");
-//
-//        return Arrays.asList(parking,parking2);
+    public ResponseEntity<List<ParkingDTO>> findAll(){
 
         List<Parking> parkingList = parkingService.findAll();
         List<ParkingDTO> result =  parkingMapper.toParkingDTOList(parkingList);
-        return result;
+        return ResponseEntity.ok(result);
+
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ParkingDTO> findById(@PathVariable String id){
+
+        Parking parking = parkingService.findById(id);
+        ParkingDTO result =  parkingMapper.toParkingDTO(parking);
+        return ResponseEntity.ok(result);
+
+    }
+    @Operation(summary = "Create Parking", description = "Api to create a Parking")
+//    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json", examples = @io.swagger.v3.oas.annotations.media.ExampleObject(value = "{\n" + "  \"username\": \"jane\",\n"
+//            + "  \"password\": \"password\"\n" + "}", summary = "Parking Example")))
+    @PostMapping
+    public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO dto){
+
+        var parking = parkingMapper.toParkingCreate(dto);
+        ParkingDTO result =  parkingMapper.toParkingDTO(parkingService.create(parking));
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
 
     }
 }
