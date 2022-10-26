@@ -1,14 +1,20 @@
 package br.com.adrianomenezes.cloudparking.entity;
 
 import lombok.*;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Getter@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Parking {
+
+    @Id
     private String id;
     private String license;
     private String state;

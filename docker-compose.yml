@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+
+  dbpostgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: parking
+      POSTGRES_USER: api
+      POSTGRES_USER: user
+      POSTGRES_USER: adriano
+      POSTGRES_PASSWORD: adr1234
+    ports:
+      - 5432:5432
+
+  dbmysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: parking
+      MYSQL_USER: adriano
+      MYSQL_PASSWORD: adr123
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - 3307:3306
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8087:8080

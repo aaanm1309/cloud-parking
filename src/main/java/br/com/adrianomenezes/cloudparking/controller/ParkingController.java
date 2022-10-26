@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/parking")
@@ -57,7 +58,7 @@ public class ParkingController {
     @PostMapping
     public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO dto){
 
-        var parking = parkingMapper.toParkingCreate(dto);
+        Parking parking = parkingMapper.toParkingCreate(dto);
         ParkingDTO result =  parkingMapper.toParkingDTO(parkingService.create(parking));
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
 
@@ -65,7 +66,7 @@ public class ParkingController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ParkingDTO> update(@PathVariable String id,@RequestBody ParkingCreateDTO dto){
-        var parking = parkingMapper.toParkingCreate(dto);
+        Parking parking = parkingMapper.toParkingCreate(dto);
         parking.setId(id);
         ParkingDTO result =  parkingMapper.toParkingDTO(parkingService.update(parking));
         return ResponseEntity.ok(result);
