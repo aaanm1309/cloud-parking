@@ -1,4 +1,4 @@
-package br.com.adrianomenezes.config;
+package br.com.adrianomenezes.cloudparking.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;

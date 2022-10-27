@@ -8,6 +8,7 @@ import br.com.adrianomenezes.cloudparking.service.ParkingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +56,8 @@ public class ParkingController {
     @Operation(summary = "Create Parking", description = "Api to create a Parking")
 //    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json", examples = @io.swagger.v3.oas.annotations.media.ExampleObject(value = "{\n" + "  \"username\": \"jane\",\n"
 //            + "  \"password\": \"password\"\n" + "}", summary = "Parking Example")))
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO dto){
 
         Parking parking = parkingMapper.toParkingCreate(dto);

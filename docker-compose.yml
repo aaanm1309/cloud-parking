@@ -13,6 +13,8 @@ services:
       POSTGRES_PASSWORD: adr1234
     ports:
       - 5432:5432
+    networks:
+      - application
 
   dbmysql:
     image: mysql
@@ -24,9 +26,18 @@ services:
       MYSQL_ROOT_PASSWORD: 123456
     ports:
       - 3307:3306
+    volumes:
+      - /opt/mysql-data:/var/lib/mysql
+    networks:
+      - application
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8087:8080
+    networks:
+      - application
+
+networks:
+  application:

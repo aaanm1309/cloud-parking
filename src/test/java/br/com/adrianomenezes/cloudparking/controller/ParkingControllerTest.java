@@ -3,6 +3,8 @@ package br.com.adrianomenezes.cloudparking.controller;
 import br.com.adrianomenezes.cloudparking.container.AbstractContainerBase;
 import br.com.adrianomenezes.cloudparking.controller.dto.ParkingCreateDTO;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.parsing.Parser;
 import io.restassured.response.ResponseBody;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +17,8 @@ import org.springframework.http.MediaType;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ParkingControllerTest extends AbstractContainerBase {
+class ParkingControllerTest
+        extends AbstractContainerBase {
 
     @LocalServerPort
     private int randomPort;
@@ -41,6 +44,8 @@ class ParkingControllerTest extends AbstractContainerBase {
     @Test
     void whenFindAllThen() {
         RestAssured.given()
+                .auth()
+                .basic("admin","master123")
                 .when()
                 .get("/parking")
                 .then()
@@ -56,12 +61,17 @@ class ParkingControllerTest extends AbstractContainerBase {
 
     @Test
     void whenCreateThenCheckIsCreated() {
-        RestAssured.given()
-                .when()
+        RestAssured.registerParser("text/html", Parser.JSON);
+        RestAssured.registerParser("", Parser.JSON);
+            RestAssured.given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .auth()
+                .basic("admin","master123")
+                .when()
                 .body(createDTO)
                 .post("/parking")
                 .then()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .statusCode(201)
                 .body("license", Matchers.equalTo("XYZ-1234"))
                 .body("color", Matchers.equalTo("AMARELO"))
